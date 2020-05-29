@@ -1,9 +1,11 @@
 import random
-
 import requests
+import webbrowser
 
 drink_recipe_url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s="
 random_drink_url = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+random_dog_image_url = "https://dog.ceo/api/breeds/image/random"
+random_fox_image_url = "https://randomfox.ca/floof/?ref=apilist.fun"
 
 
 def menu():
@@ -48,6 +50,7 @@ def random_picture():
         number = random.randrange(0, 3)
         if number == 0:
             print("dog image")
+            get_random_dog_image()
             print("Now let's play the game of \"Never have I ever\".\n"
                   "If it's your turn, you lead. Who loses, drinks.\n")
             drink_name = get_random_drink()
@@ -61,6 +64,7 @@ def random_picture():
             print("Cook instructions:", drink_info.get("instructions"))
         elif number == 1:
             print("fox image")
+            get_random_fox_image()
             truth_dare = random.randrange(0, 2)
             if truth_dare == 0:
                 print("Truth")
@@ -87,6 +91,20 @@ def get_random_drink():
     return name
 
 
+def get_random_dog_image():
+    response = requests.get(random_dog_image_url)
+    data = response.json()
+    print("Dog image:", data.get("message"), "\n")
+    webbrowser.open(data.get("message"))
+
+
+def get_random_fox_image():
+    response = requests.get(random_fox_image_url)
+    data = response.json()
+    print("Fox image:", data.get("image"), "\n")
+    webbrowser.open(data.get("image"))
+
+
 def transform_drink_name(name):
     name = name.lower()
     new_name = []
@@ -111,3 +129,4 @@ def get_drink_recipe(name):
 
 
 menu()
+
